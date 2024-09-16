@@ -1,0 +1,52 @@
+package com.phaete.nf412recapspringboot.controller;
+
+import com.phaete.nf412recapspringboot.model.ErrorMessage;
+import com.phaete.nf412recapspringboot.model.TodoDTO;
+import com.phaete.nf412recapspringboot.model.Todo;
+import com.phaete.nf412recapspringboot.service.KanbanToDoService;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.NoSuchElementException;
+
+@RestController
+@RequestMapping("/api/todo")
+public class KanbanToDoController {
+
+    private final KanbanToDoService kanbanToDoService;
+
+    public KanbanToDoController(KanbanToDoService kanbanToDoService) {
+        this.kanbanToDoService = kanbanToDoService;
+    }
+
+    @GetMapping
+    public List<Todo> findAll() {
+        return kanbanToDoService.findAll();
+    }
+
+    @PostMapping
+    public TodoDTO save(@RequestBody TodoDTO todoDTO) {
+        Todo newTodo = kanbanToDoService.save(todoDTO);
+        return new TodoDTO(newTodo.description(), newTodo.status());
+    }
+
+    @GetMapping("/{id}")
+    public Todo findById(@PathVariable String id) {
+        return kanbanToDoService.findById(id);
+    }
+
+    @PutMapping("/{id}")
+    public Todo update(@PathVariable String id, @RequestBody Todo todo) {
+        return kanbanToDoService.update(id, todo);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable String id) {
+        kanbanToDoService.deleteById(id);
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public ErrorMessage handleNoSuchElementException(NoSuchElementException e) {
+        return new ErrorMessage(e.getClass().getName(), e.getMessage());
+    }
+}
