@@ -36,7 +36,8 @@ public class KanbanToDoService {
         return kanbanToDoRepository.save(new Todo(todoToUpdate.id(), todo.description(), todo.status()));
     }
 
-    public void deleteById(String id) {
+    public String deleteById(String id) {
         kanbanToDoRepository.deleteById(id);
+        return "Deleted todo with id: " + id;
     }
 }

@@ -41,8 +41,8 @@ public class KanbanToDoController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable String id) {
-        kanbanToDoService.deleteById(id);
+    public String delete(@PathVariable String id) {
+        return kanbanToDoService.deleteById(id);
     }
 
     @ExceptionHandler(NoSuchElementException.class)
