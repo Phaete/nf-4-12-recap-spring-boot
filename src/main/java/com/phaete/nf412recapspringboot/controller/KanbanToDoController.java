@@ -4,6 +4,7 @@ import com.phaete.nf412recapspringboot.model.ErrorMessage;
 import com.phaete.nf412recapspringboot.model.TodoDTO;
 import com.phaete.nf412recapspringboot.model.Todo;
 import com.phaete.nf412recapspringboot.service.KanbanToDoService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,7 +47,16 @@ public class KanbanToDoController {
     }
 
     @ExceptionHandler(NoSuchElementException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorMessage handleNoSuchElementException(NoSuchElementException e) {
         return new ErrorMessage(e.getClass().getName(), e.getMessage());
     }
+
+    @ExceptionHandler(AssertionError.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorMessage handleAssertionError(AssertionError e) {
+        return new ErrorMessage(e.getClass().getName(), "Could not complete request.");
+    }
+
+
 }

@@ -36,7 +36,8 @@ public class KanbanToDoService {
         return kanbanToDoRepository.save(new Todo(todoToUpdate.id(), todo.description(), todo.status()));
     }
 
-    public String deleteById(String id) {
+    public String deleteById(String id) throws AssertionError {
+        assert kanbanToDoRepository.existsById(id);
         kanbanToDoRepository.deleteById(id);
         return "Deleted todo with id: " + id;
     }
